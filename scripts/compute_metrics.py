@@ -26,12 +26,23 @@ NIFTI_DIR = DATA_DIR / "nifti"
 PRED_DIR = DATA_DIR / "predictions"
 
 
-def load_binary_mask(path: Path) -> tuple[np.ndarray, tuple[float, ...]]:
+# For multilabel predictions, which label to use as the target.
+# TotalSegmentator lung_nodules outputs: 1=lung, 2=nodules.
+# For most models, any nonzero voxel is the prediction.
+MODEL_TARGET_LABEL = {
+    "totalsegmentator": 2,  # label 2 = nodules (label 1 = lung parenchyma)
+}
+
+
+def load_binary_mask(path: Path, model_name: str = "") -> tuple[np.ndarray, tuple[float, ...]]:
     """Load a NIfTI file and return (binary array, voxel spacing in mm)."""
     img = sitk.ReadImage(str(path))
     arr = sitk.GetArrayFromImage(img)
     spacing = img.GetSpacing()  # (x, y, z) in mm
-    # Binarize: anything > 0 is foreground
+    target_label = MODEL_TARGET_LABEL.get(model_name)
+    if target_label is not None:
+        return (arr == target_label).astype(np.uint8), spacing
+    # Default: anything > 0 is foreground
     return (arr > 0).astype(np.uint8), spacing
 
 
@@ -47,10 +58,10 @@ def compute_surface_distances(gt: np.ndarray, pred: np.ndarray, spacing: tuple[f
     )
 
 
-def compute_case_metrics(gt_path: Path, pred_path: Path) -> dict:
+def compute_case_metrics(gt_path: Path, pred_path: Path, model_name: str = "") -> dict:
     """Compute all metrics for a single case."""
     gt, spacing = load_binary_mask(gt_path)
-    pred, _ = load_binary_mask(pred_path)
+    pred, _ = load_binary_mask(pred_path, model_name=model_name)
 
     # Handle shape mismatch (some models may resample)
     if gt.shape != pred.shape:
@@ -141,7 +152,7 @@ def main():
                 continue
 
             print(f"  {model_name} / {patient_id}...", end=" ", flush=True)
-            metrics = compute_case_metrics(gt_path, pred_path)
+            metrics = compute_case_metrics(gt_path, pred_path, model_name=model_name)
             metrics["model"] = model_name
             metrics["patient"] = patient_id
             rows.append(metrics)
