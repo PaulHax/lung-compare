@@ -1,0 +1,8 @@
+[project]
+name = "align-t-lungtumormask"
+version = "0.1.0"
+description = "LungTumorMask model env for align-t"
+requires-python = ">=3.10,<3.11"
+dependencies = [
+    "lungtumormask @ git+https://github.com/VemundFredriksen/LungTumorMask",
+]

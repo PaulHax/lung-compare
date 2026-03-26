@@ -1,0 +1,8 @@
+[project]
+name = "align-t-totalsegmentator"
+version = "0.1.0"
+description = "TotalSegmentator model env for align-t"
+requires-python = ">=3.11"
+dependencies = [
+    "TotalSegmentator",
+]

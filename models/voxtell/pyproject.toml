@@ -1,0 +1,8 @@
+[project]
+name = "align-t-voxtell"
+version = "0.1.0"
+description = "VoxTell model env for align-t"
+requires-python = ">=3.11"
+dependencies = [
+    "voxtell",
+]

@@ -1,0 +1,19 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Data (downloaded/generated)
+data/
+tciaDownload/
+
+# Model venvs and weights (large)
+models/*/.venv/
+models/*/uv.lock
+models/*/weights/

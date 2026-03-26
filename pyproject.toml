@@ -1,0 +1,14 @@
+[project]
+name = "align-t"
+version = "0.1.0"
+description = "Lung tumor segmentation model evaluation"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "dcmrtstruct2nii>=5",
+    "numpy>=2.4.3",
+    "pandas>=3.0.1",
+    "rt-utils>=1.2.7",
+    "simpleitk>=2.5.3",
+    "tcia-utils>=3.2.1",
+]

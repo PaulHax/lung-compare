@@ -1,0 +1,9 @@
+[project]
+name = "align-t-nnunet-pretrained"
+version = "0.1.0"
+description = "nnUNet v1 pretrained model env for align-t"
+requires-python = ">=3.11"
+dependencies = [
+    "nnunet",
+    "torch>=2.0,<2.6",
+]
